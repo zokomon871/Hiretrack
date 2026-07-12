@@ -9,8 +9,7 @@ import { redirect } from 'next/navigation';
 
 const jobSchema = z.object({
   title: z.string().min(2),
-  department: z.nativeEnum(Department),
-  location: z.string().min(2),
+  department: z.string().optional(),
   status: z.nativeEnum(JobStatus).default('DRAFT'),
   description: z.string().optional(),
 });

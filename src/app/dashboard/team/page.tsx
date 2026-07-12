@@ -96,7 +96,7 @@ export default async function TeamPage() {
                   <TableRow key={invitation.id}>
                     <TableCell>{invitation.email}</TableCell>
                     <TableCell>{invitation.role}</TableCell>
-                    <TableCell>{new Date(invitation.expiresAt).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(invitation.expires).toLocaleDateString()}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

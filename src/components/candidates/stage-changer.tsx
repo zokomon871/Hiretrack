@@ -32,7 +32,13 @@ export function StageChanger({
   };
 
   return (
-    <Select value={stage} onValueChange={handleValueChange} disabled={isPending}>
+    <Select 
+      value={currentStage} 
+      onValueChange={(val) => {
+        if (val) handleValueChange(val as CandidateStage);
+      }}
+      disabled={isPending}
+    >
       <SelectTrigger className="w-[160px] h-8 text-xs font-semibold">
         <SelectValue placeholder="Select Stage" />
       </SelectTrigger>

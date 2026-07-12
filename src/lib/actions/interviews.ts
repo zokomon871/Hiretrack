@@ -13,12 +13,12 @@ const scheduleSchema = z.object({
 
 export async function scheduleInterview(prevState: any, formData: FormData) {
   const session = await auth();
-  if (!session?.user?.id) return { error: 'Not authenticated' };
+  if (!session?.user?.id) return { error: 'Not authenticated', success: '' };
 
   const parsed = scheduleSchema.safeParse(Object.fromEntries(formData));
 
   if (!parsed.success) {
-    return { error: 'Invalid form data' };
+    return { error: 'Invalid form data', success: '' };
   }
 
   const { candidateId, interviewerId, scheduledAt } = parsed.data;
@@ -36,7 +36,7 @@ export async function scheduleInterview(prevState: any, formData: FormData) {
     });
 
     if (!candidate || candidate.job.workspaceId !== user?.workspaceMembers[0]?.workspaceId) {
-      return { error: 'Unauthorized' };
+      return { error: 'Unauthorized', success: '' };
     }
 
     await prisma.interview.create({
@@ -57,8 +57,8 @@ export async function scheduleInterview(prevState: any, formData: FormData) {
 
     revalidatePath(`/dashboard/candidates/${candidateId}`);
     revalidatePath('/dashboard/candidates');
-    return { success: 'Interview scheduled successfully' };
+    return { error: '', success: 'Interview scheduled successfully' };
   } catch (error) {
-    return { error: 'Failed to schedule interview' };
+    return { error: 'Failed to schedule interview', success: '' };
   }
 }

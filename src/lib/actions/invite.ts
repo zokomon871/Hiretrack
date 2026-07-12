@@ -13,7 +13,7 @@ const inviteSchema = z.object({
 
 export async function inviteUser(prevState: any, formData: FormData) {
   const session = await auth();
-  if (!session?.user?.id) return { error: 'Not authenticated' };
+  if (!session?.user?.id) return { error: 'Not authenticated', success: '' };
 
   // Check if current user is ADMIN
   const currentUserWithWorkspace = await prisma.user.findUnique({
@@ -25,13 +25,13 @@ export async function inviteUser(prevState: any, formData: FormData) {
 
   const memberInfo = currentUserWithWorkspace?.workspaceMembers[0];
   if (!memberInfo || memberInfo.role !== 'ADMIN') {
-    return { error: 'Not authorized to invite users' };
+    return { error: 'Not authorized to invite users', success: '' };
   }
 
   const parsed = inviteSchema.safeParse(Object.fromEntries(formData));
 
   if (!parsed.success) {
-    return { error: 'Invalid data' };
+    return { error: 'Invalid data', success: '' };
   }
 
   const { email, role } = parsed.data;
@@ -52,8 +52,8 @@ export async function inviteUser(prevState: any, formData: FormData) {
     });
 
     revalidatePath('/dashboard/team');
-    return { success: 'Invitation sent successfully!' };
+    return { error: '', success: 'Invitation sent successfully!' };
   } catch (error) {
-    return { error: 'Failed to send invitation' };
+    return { error: 'Failed to send invitation', success: '' };
   }
 }

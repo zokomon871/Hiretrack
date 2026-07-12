@@ -29,7 +29,7 @@ function SubmitButton() {
 export function SignupForm() {
   const [state, formAction] = useActionState(
     signup,
-    { error: undefined },
+    { error: '' },
   );
 
   return (
