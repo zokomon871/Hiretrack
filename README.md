@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HireTrack
 
-## Getting Started
+> An applicant pipeline with scorecards and interview scheduling for recruiters.
 
-First, run the development server:
+![Hero screenshot](docs/screenshots/hero.png)
 
+[![CI](https://github.com/your-username/hiretrack/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/hiretrack/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) **Live demo → https://hiretrack-app.vercel.app**
+
+## Features
+- Manages candidate pipelines through a drag-and-drop Kanban board.
+- Enforces strict role-based access control (Admin, Member, Viewer) for workspace members.
+- Generates structured scorecards to capture 1-5 ratings across technical, cultural, and communication metrics.
+- Schedules and tracks upcoming interview appointments.
+- Secures all API endpoints with NextAuth.js JWT sessions and bcrypt hashed passwords.
+- Validates all client and server input using shared Zod schemas.
+
+## Tech Stack
+Next.js · TypeScript · PostgreSQL (Prisma) · Tailwind · Auth.js · Vercel
+
+## Quick Start
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/hiretrack && cd hiretrack
+cp .env.example .env # then fill in values
+npm install
+npm run db:migrate && npm run db:seed
+npm run dev # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
+| Variable | Description |
+| --- | --- |
+| DATABASE_URL | Postgres connection string |
+| AUTH_SECRET | Session signing secret |
+| NEXTAUTH_URL | App URL (http://localhost:3000) |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Architecture
+HireTrack uses a standard Next.js App Router architecture with a monolithic backend powered by Prisma ORM. Server Actions handle all mutations with optimistic UI updates on the client. See [docs/architecture.md](docs/architecture.md) for data models and diagrams.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Testing
+```bash
+npm run lint # TypeScript typechecking and ESLint
+```
 
-## Learn More
+## Roadmap
+- [x] Shipped drag-and-drop candidate pipeline
+- [x] Shipped 1-to-1 interview scorecards
+- [ ] Add public /careers landing page for candidates to apply
+- [ ] Add integration with external calendars (Google Calendar/Outlook)
 
-To learn more about Next.js, take a look at the following resources:
+## Screenshots
+[Include screenshots of the dashboard, kanban board, and scorecard here]
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
+MIT — see [LICENSE](LICENSE).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Demo credentials
+To view the application without signing up, use the following credentials:
+- **Email:** `alice@acmecorp.com` (Admin)
+- **Password:** `password123`
