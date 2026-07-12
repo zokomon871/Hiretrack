@@ -7,12 +7,13 @@
 [![CI](https://github.com/your-username/hiretrack/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/hiretrack/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) **Live demo → https://hiretrack-app.vercel.app**
 
 ## Features
-- Manages candidate pipelines through a drag-and-drop Kanban board.
+- Manages candidate pipelines through a drag-and-drop Kanban board with quick manual addition.
 - Enforces strict role-based access control (Admin, Member, Viewer) for workspace members.
 - Generates structured scorecards to capture 1-5 ratings across technical, cultural, and communication metrics.
 - Schedules and tracks upcoming interview appointments.
-- Secures all API endpoints with NextAuth.js JWT sessions and bcrypt hashed passwords.
+- Secures all API endpoints with NextAuth.js JWT sessions, bcrypt hashed passwords, and OAuth integration (Google & GitHub).
 - Validates all client and server input using shared Zod schemas.
+- Features a premium, responsive UI with automatic Dark/Light mode toggling based on system preferences.
 
 ## Tech Stack
 Next.js · TypeScript · PostgreSQL (Prisma) · Tailwind · Auth.js · Vercel
@@ -32,6 +33,10 @@ npm run dev # http://localhost:3000
 | DATABASE_URL | Postgres connection string |
 | AUTH_SECRET | Session signing secret |
 | NEXTAUTH_URL | App URL (http://localhost:3000) |
+| AUTH_GOOGLE_ID | Google OAuth Client ID |
+| AUTH_GOOGLE_SECRET | Google OAuth Client Secret |
+| AUTH_GITHUB_ID | GitHub OAuth Client ID |
+| AUTH_GITHUB_SECRET | GitHub OAuth Client Secret |
 
 ## Architecture
 HireTrack uses a standard Next.js App Router architecture with a monolithic backend powered by Prisma ORM. Server Actions handle all mutations with optimistic UI updates on the client. See [docs/architecture.md](docs/architecture.md) for data models and diagrams.

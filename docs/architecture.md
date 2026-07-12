@@ -9,6 +9,7 @@ erDiagram
     WORKSPACE ||--o{ WORKSPACE_MEMBER : "has"
     WORKSPACE ||--o{ JOB : "posts"
     WORKSPACE_MEMBER }o--|| USER : "belongs to"
+    USER ||--o{ ACCOUNT : "links (OAuth)"
     
     JOB ||--o{ CANDIDATE : "receives"
     
@@ -22,6 +23,12 @@ erDiagram
         string id PK
         string email
         string password
+    }
+    
+    ACCOUNT {
+        string id PK
+        string provider
+        string providerAccountId
     }
     
     WORKSPACE {
@@ -63,7 +70,11 @@ erDiagram
 
 ## Authentication & Authorization
 
-Authentication is handled securely using **Auth.js (NextAuth.js v5)**. Passwords are hashed with `bcryptjs` and stored safely in PostgreSQL. Upon a successful login, Auth.js signs a secure, HTTP-only JWT token that stores the user's `id`.
+Authentication is handled securely using **Auth.js (NextAuth.js v5)**. The application supports multiple authentication strategies:
+- **Credentials (Email/Password)**: Passwords are hashed with `bcryptjs` and stored safely in PostgreSQL.
+- **OAuth (Google & GitHub)**: Users can sign in using third-party providers. When a new user logs in via OAuth for the first time, a `createUser` event hook automatically provisions a default `Workspace` for them, making them an `ADMIN` so they can begin using the application immediately without encountering multi-tenant errors.
+
+Upon a successful login, Auth.js signs a secure, HTTP-only JWT token that stores the user's `id`.
 
 Authorization is enforced at both the middleware routing level and the database mutation level:
 - **Routing**: `src/proxy.ts` strictly guards the `/dashboard/*` routes. Unauthenticated users are hard-redirected to `/login`.
