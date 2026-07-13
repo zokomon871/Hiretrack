@@ -6,7 +6,7 @@ Thank you for your interest in contributing! This document outlines how to set u
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/hiretrack
+   git clone https://github.com/zokomon871/Hiretrack.git
    cd hiretrack
    ```
 
