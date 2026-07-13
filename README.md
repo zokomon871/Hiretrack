@@ -4,14 +4,15 @@
 
 ![Hero screenshot](docs/screenshots/hero.png)
 
-[![CI](https://github.com/your-username/hiretrack/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/hiretrack/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) **Live demo → https://hiretrack-app.vercel.app**
 
 ## Features
 - Manages candidate pipelines through a drag-and-drop Kanban board with quick manual addition.
 - Enforces strict role-based access control (Admin, Member, Viewer) for workspace members.
+- Advanced "Magic Auto-Join" system that allows new team members to automatically join the correct workspace simply by logging in via OAuth, bypassing the need for manual email verification links.
 - Generates structured scorecards to capture 1-5 ratings across technical, cultural, and communication metrics.
 - Schedules and tracks upcoming interview appointments.
-- Secures all API endpoints with NextAuth.js JWT sessions, bcrypt hashed passwords, and OAuth integration (Google & GitHub).
+- Secures all API endpoints with NextAuth.js JWT sessions, bcrypt hashed passwords, and OAuth integration (Google & GitHub) protected by Edge Middleware.
+- Heavily optimized database queries to eliminate waterfalls and fetch data efficiently.
 - Validates all client and server input using shared Zod schemas.
 - Features a premium, responsive UI with automatic Dark/Light mode toggling based on system preferences.
 
@@ -20,7 +21,7 @@ Next.js · TypeScript · PostgreSQL (Prisma) · Tailwind · Auth.js · Vercel
 
 ## Quick Start
 ```bash
-git clone https://github.com/your-username/hiretrack && cd hiretrack
+git clone https://github.com/zokomon871/Hiretrack.git && cd hiretrack
 cp .env.example .env # then fill in values
 npm install
 npm run db:migrate && npm run db:seed

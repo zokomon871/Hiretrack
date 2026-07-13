@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/card';
 import { useFormStatus } from 'react-dom';
 import { OAuthButtons } from './oauth-buttons';
+import Link from 'next/link';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -75,6 +76,12 @@ export function LoginForm() {
             )}
           </div>
         </form>
+        <div className="mt-4 text-center text-sm">
+          Don&apos;t have an account?{' '}
+          <Link href="/signup" className="underline underline-offset-4">
+            Sign up
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );

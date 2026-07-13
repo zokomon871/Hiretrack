@@ -33,6 +33,19 @@ export async function updateCandidateStage(candidateId: string, newStage: Candid
     data: { stage: newStage },
   });
 
+  // Log activity
+  if (workspaceId) {
+    const userObj = await prisma.user.findUnique({ where: { id: session.user.id } });
+    await prisma.activityLog.create({
+      data: {
+        workspaceId,
+        userId: session.user.id,
+        action: 'MOVED_STAGE',
+        details: `${userObj?.name || 'A user'} moved ${candidate?.name || 'a candidate'} to the ${newStage} stage.`,
+      }
+    });
+  }
+
   revalidatePath('/dashboard/candidates');
 }
 
@@ -81,6 +94,17 @@ export async function createCandidate(prevState: any, formData: FormData) {
         resumeUrl: resumeUrl || null,
         stage: 'APPLIED',
       },
+    });
+
+    // Log activity
+    const userObj = await prisma.user.findUnique({ where: { id: session.user.id } });
+    await prisma.activityLog.create({
+      data: {
+        workspaceId,
+        userId: session.user.id,
+        action: 'CREATED_CANDIDATE',
+        details: `${userObj?.name || 'A user'} manually added candidate ${name} to the ${job.title} role.`,
+      }
     });
 
     revalidatePath('/dashboard/candidates');

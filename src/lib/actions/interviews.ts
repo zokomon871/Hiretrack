@@ -55,6 +55,18 @@ export async function scheduleInterview(prevState: any, formData: FormData) {
       });
     }
 
+    // Log activity
+    const userObj = await prisma.user.findUnique({ where: { id: session.user.id } });
+    const interviewerObj = await prisma.user.findUnique({ where: { id: interviewerId } });
+    await prisma.activityLog.create({
+      data: {
+        workspaceId: candidate.job.workspaceId,
+        userId: session.user.id,
+        action: 'SCHEDULED_INTERVIEW',
+        details: `${userObj?.name || 'A user'} scheduled an interview for ${candidate.name} with ${interviewerObj?.name || 'an interviewer'}.`,
+      }
+    });
+
     revalidatePath(`/dashboard/candidates/${candidateId}`);
     revalidatePath('/dashboard/candidates');
     return { error: '', success: 'Interview scheduled successfully' };

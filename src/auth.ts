@@ -63,24 +63,55 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async createUser({ user }) {
       if (!user.id) return;
       
-      // When a new user is created via OAuth, provision a Workspace for them automatically
-      // if they aren't already attached to one.
-      const existingMember = await prisma.workspaceMember.findFirst({
-        where: { userId: user.id }
-      });
+      // Check if they have a pending invitation
+      const invitation = user.email ? await prisma.invitation.findFirst({
+        where: { email: user.email }
+      }) : null;
 
-      if (!existingMember) {
-        await prisma.workspace.create({
+      if (invitation) {
+        // Automatically join the invited workspace
+        await prisma.workspaceMember.create({
           data: {
-            name: `${user.name || 'My'}'s Workspace`,
-            members: {
-              create: {
-                userId: user.id,
-                role: 'ADMIN',
+            workspaceId: invitation.workspaceId,
+            userId: user.id,
+            role: invitation.role,
+          }
+        });
+
+        // Optionally log the activity
+        const inviter = await prisma.user.findUnique({ where: { id: invitation.inviterId } });
+        await prisma.activityLog.create({
+          data: {
+            workspaceId: invitation.workspaceId,
+            userId: user.id,
+            action: 'JOINED_WORKSPACE',
+            details: `${user.name || 'A user'} joined the workspace via an invitation from ${inviter?.name || 'an Admin'}.`,
+          }
+        });
+
+        // Delete the used invitation so it can't be reused
+        await prisma.invitation.delete({
+          where: { id: invitation.id }
+        });
+      } else {
+        // No invitation found, provision a brand new Workspace for them automatically
+        const existingMember = await prisma.workspaceMember.findFirst({
+          where: { userId: user.id }
+        });
+
+        if (!existingMember) {
+          await prisma.workspace.create({
+            data: {
+              name: `${user.name || 'My'}'s Workspace`,
+              members: {
+                create: {
+                  userId: user.id,
+                  role: 'ADMIN',
+                },
               },
             },
-          },
-        });
+          });
+        }
       }
     },
   },

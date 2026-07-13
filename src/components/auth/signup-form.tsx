@@ -55,12 +55,11 @@ export function SignupForm() {
               </div>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="workspaceName">Company / Workspace Name</Label>
+              <Label htmlFor="workspaceName">Company / Workspace Name <span className="text-muted-foreground font-normal">(Optional if invited)</span></Label>
               <Input
                 id="workspaceName"
                 name="workspaceName"
                 placeholder="Acme Corp"
-                required
               />
             </div>
             <div className="grid gap-2">

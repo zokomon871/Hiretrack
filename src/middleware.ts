@@ -5,7 +5,7 @@ const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const isLoggedIn = !!req.auth
-  const isAuthRoute = req.nextUrl.pathname.startsWith('/login')
+  const isAuthRoute = req.nextUrl.pathname.startsWith('/login') || req.nextUrl.pathname.startsWith('/signup')
   
   if (isAuthRoute) {
     if (isLoggedIn) {

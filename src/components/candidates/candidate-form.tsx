@@ -38,7 +38,7 @@ export function CandidateForm({ jobs }: { jobs: { id: string; title: string }[] 
             </SelectTrigger>
             <SelectContent>
               {jobs.map((job) => (
-                <SelectItem key={job.id} value={job.id}>
+                <SelectItem key={job.id} value={job.id} label={job.title}>
                   {job.title}
                 </SelectItem>
               ))}

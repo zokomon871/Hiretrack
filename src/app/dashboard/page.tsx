@@ -49,6 +49,15 @@ export default async function DashboardPage() {
     });
   }
 
+  // Fetch Activity Log for Activity feed
+  const recentActivities = await prisma.activityLog.findMany({
+    where: {
+      workspaceId
+    },
+    orderBy: { createdAt: 'desc' },
+    take: 10,
+  });
+
   return (
     <>
       <div className="flex items-center justify-between space-y-2 mb-6">
@@ -94,10 +103,26 @@ export default async function DashboardPage() {
             <CardTitle>Recent Activity</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
-              <p>No recent activity found.</p>
-              <p className="text-sm">When candidates are moved or interviews scheduled, they will appear here.</p>
-            </div>
+            {recentActivities.length > 0 ? (
+              <div className="space-y-4">
+                {recentActivities.map((activity) => (
+                  <div key={activity.id} className="flex items-center gap-4 text-sm">
+                    <div className="w-2 h-2 rounded-full bg-blue-500 mt-0.5 shrink-0"></div>
+                    <div className="flex-1 text-muted-foreground">
+                      {activity.details}
+                    </div>
+                    <div className="text-muted-foreground text-xs whitespace-nowrap">
+                      {activity.createdAt.toLocaleDateString()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
+                <p>No recent activity found.</p>
+                <p className="text-sm">When actions are taken in your workspace, they will appear here.</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

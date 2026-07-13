@@ -1,6 +1,6 @@
 # HireTrack Implementation Plan
 
-This document outlines the step-by-step execution plan followed to build the HireTrack Applicant Tracking System, satisfying the requirements of the Digital Heroes assessment.
+This document outlines the step-by-step execution plan followed to build the HireTrack Applicant Tracking System.
 
 ## Phase 1: Foundation & Setup
 1. **Next.js Initialization**: Scaffolded the project using Next.js 15 App Router (`npx create-next-app@latest`).
@@ -40,8 +40,12 @@ Modeled the relational database in `prisma/schema.prisma` to support multi-tenan
    - Added a debounced search bar on the candidate pipeline that syncs with the URL state.
 3. **Manual Candidate Addition**:
    - Added a quick "Add Candidate" form for recruiters to manually inject candidates into the pipeline.
-4. **Team Invites**:
+4. **Team Invites & Magic Auto-Join**:
    - Built the backend logic and UI for Admins to invite colleagues via email and assign roles.
+   - Implemented a "Magic Auto-Join" flow: when an invited user signs up via OAuth, the system automatically detects their email, skips the workspace creation step, and seamlessly deposits them into the inviter's workspace with the correct role.
+5. **Performance & Security Tuning**:
+   - Refactored database access patterns to eliminate waterfall queries, drastically reducing latency.
+   - Implemented `src/middleware.ts` for strict edge-level route protection.
 
 ## Phase 5: SEO & Documentation
 1. **SEO Optimization**:

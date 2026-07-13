@@ -9,7 +9,7 @@ const signupSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   password: z.string().min(6),
-  workspaceName: z.string().min(2),
+  workspaceName: z.string().optional(),
 });
 
 export async function signup(prevState: any, formData: FormData) {
@@ -37,26 +37,66 @@ export async function signup(prevState: any, formData: FormData) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-    // Create Workspace and User in a transaction
-    await prisma.$transaction(async (tx) => {
-      const workspace = await tx.workspace.create({
-        data: { name: workspaceName },
-      });
+    // Check if they have a pending invitation
+    const invitation = await prisma.invitation.findFirst({
+      where: { email }
+    });
 
-      await tx.user.create({
-        data: {
-          name,
-          email,
-          password: hashedPassword,
-          workspaceMembers: {
-            create: {
-              workspaceId: workspace.id,
-              role: 'ADMIN',
+    if (invitation) {
+      await prisma.$transaction(async (tx) => {
+        // Create user
+        const user = await tx.user.create({
+          data: {
+            name,
+            email,
+            password: hashedPassword,
+            workspaceMembers: {
+              create: {
+                workspaceId: invitation.workspaceId,
+                role: invitation.role,
+              },
             },
           },
-        },
+        });
+
+        // Log the activity
+        const inviter = await tx.user.findUnique({ where: { id: invitation.inviterId } });
+        await tx.activityLog.create({
+          data: {
+            workspaceId: invitation.workspaceId,
+            userId: user.id,
+            action: 'JOINED_WORKSPACE',
+            details: `${user.name || 'A user'} joined the workspace via an email invitation from ${inviter?.name || 'an Admin'}.`,
+          }
+        });
+
+        // Delete the used invitation
+        await tx.invitation.delete({
+          where: { id: invitation.id }
+        });
       });
-    });
+    } else {
+      // Create brand new Workspace and User
+      await prisma.$transaction(async (tx) => {
+        const workspace = await tx.workspace.create({
+          data: { name: workspaceName || `${name}'s Workspace` },
+        });
+
+        await tx.user.create({
+          data: {
+            name,
+            email,
+            password: hashedPassword,
+            workspaceMembers: {
+              create: {
+                workspaceId: workspace.id,
+                role: 'ADMIN',
+              },
+            },
+          },
+        });
+      });
+    }
   } catch (error) {
     return {
       error: 'An error occurred while creating your account.',

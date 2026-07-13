@@ -28,6 +28,7 @@ model User {
   invitations      Invitation[]
   scorecards       Scorecard[]       @relation("ReviewerScorecards")
   interviews       Interview[]       @relation("InterviewerInterviews")
+  activity         ActivityLog[]
 }
 
 model Account {
@@ -80,6 +81,7 @@ model Workspace {
   members     WorkspaceMember[]
   invitations Invitation[]
   jobs        Job[]
+  activity    ActivityLog[]
 }
 
 model WorkspaceMember {
@@ -191,4 +193,16 @@ model Scorecard {
 
   interview Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
   reviewer  User      @relation("ReviewerScorecards", fields: [reviewerId], references: [id], onDelete: Cascade)
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  action      String
+  details     String   @db.Text
+  createdAt   DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

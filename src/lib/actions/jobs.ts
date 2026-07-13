@@ -45,6 +45,20 @@ export async function createJob(prevState: any, formData: FormData) {
       },
     });
 
+    const session = await auth();
+    // Log activity
+    if (session?.user?.id) {
+      const userObj = await prisma.user.findUnique({ where: { id: session.user.id } });
+      await prisma.activityLog.create({
+        data: {
+          workspaceId,
+          userId: session.user.id,
+          action: 'CREATED_JOB',
+          details: `${userObj?.name || 'A user'} created a new job requisition: ${job.title}.`,
+        }
+      });
+    }
+
     revalidatePath('/dashboard/jobs');
   } catch (error) {
     return { error: 'Failed to create job' };

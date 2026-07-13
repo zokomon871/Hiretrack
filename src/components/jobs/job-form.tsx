@@ -71,7 +71,7 @@ export function JobForm({ job }: { job?: Job }) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="DRAFT">Draft</SelectItem>
-              <SelectItem value="PUBLISHED">Published</SelectItem>
+              <SelectItem value="OPEN">Open</SelectItem>
               <SelectItem value="CLOSED">Closed</SelectItem>
             </SelectContent>
           </Select>
