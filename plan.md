@@ -45,7 +45,7 @@ Modeled the relational database in `prisma/schema.prisma` to support multi-tenan
    - Implemented a "Magic Auto-Join" flow: when an invited user signs up via OAuth, the system automatically detects their email, skips the workspace creation step, and seamlessly deposits them into the inviter's workspace with the correct role.
 5. **Performance & Security Tuning**:
    - Refactored database access patterns to eliminate waterfall queries, drastically reducing latency.
-   - Implemented `src/middleware.ts` for strict edge-level route protection.
+   - Implemented `src/proxy.ts` (Next.js 16+ edge routing convention) for strict route protection.
 
 ## Phase 5: SEO & Documentation
 1. **SEO Optimization**:

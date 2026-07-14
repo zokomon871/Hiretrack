@@ -77,5 +77,5 @@ Authentication is handled securely using **Auth.js (NextAuth.js v5)**. The appli
 Upon a successful login, Auth.js signs a secure, HTTP-only JWT token that stores the user's `id`.
 
 Authorization is enforced at both the middleware routing level and the database mutation level:
-- **Edge Routing**: `src/middleware.ts` strictly guards the `/dashboard/*` routes using Next.js Edge Middleware. Unauthenticated users are hard-redirected to `/login`.
+- **Edge Routing**: `src/proxy.ts` (Next.js 16+ convention) strictly guards the `/dashboard/*` routes using Next.js Edge Middleware. Unauthenticated users are hard-redirected to `/login`.
 - **Data Access (RBAC)**: When performing server actions (like `updateCandidateStage` or `submitScorecard`), the server explicitly fetches the authenticated user's `WorkspaceMember` relationship. If a user tries to mutate a Candidate that does not belong to a Job inside their authorized Workspace, the action throws an `Unauthorized` error. Furthermore, Scorecards can only be submitted by the explicitly assigned `interviewerId` for that specific Interview.
