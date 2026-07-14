@@ -62,7 +62,7 @@ export function KanbanBoard({ initialCandidates }: KanbanBoardProps) {
           const stageCandidates = optimisticCandidates.filter(c => c.stage === stage);
           
           return (
-            <div key={stage} className="flex-shrink-0 w-80 bg-muted/50 rounded-lg p-4">
+            <div key={stage} className="flex-shrink-0 w-80 bg-muted/50 rounded-lg p-4 flex flex-col h-[calc(100vh-220px)]">
               <div className="font-semibold mb-4 flex items-center justify-between">
                 <span>{stage.replace('_', ' ')}</span>
                 <span className="text-muted-foreground text-sm bg-muted px-2 py-1 rounded-full">
@@ -75,7 +75,7 @@ export function KanbanBoard({ initialCandidates }: KanbanBoardProps) {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={`min-h-[500px] transition-colors ${
+                    className={`flex-1 overflow-y-auto pr-2 transition-colors ${
                       snapshot.isDraggingOver ? 'bg-muted/80' : ''
                     }`}
                   >
