@@ -49,6 +49,49 @@ export async function updateCandidateStage(candidateId: string, newStage: Candid
   revalidatePath('/dashboard/candidates');
 }
 
+export async function bulkUpdateCandidateStage(candidateIds: string[], newStage: CandidateStage) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error('Not authenticated');
+  if (!candidateIds.length) return;
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    include: { workspaceMembers: true },
+  });
+
+  const workspaceId = user?.workspaceMembers[0]?.workspaceId;
+  if (!workspaceId) throw new Error('No workspace found');
+
+  // Verify candidate IDs belong to this workspace
+  const candidates = await prisma.candidate.findMany({
+    where: {
+      id: { in: candidateIds },
+      job: { workspaceId },
+    },
+    select: { id: true, name: true },
+  });
+
+  const validIds = candidates.map(c => c.id);
+  if (!validIds.length) return;
+
+  await prisma.candidate.updateMany({
+    where: { id: { in: validIds } },
+    data: { stage: newStage },
+  });
+
+  const userObj = await prisma.user.findUnique({ where: { id: session.user.id } });
+  await prisma.activityLog.create({
+    data: {
+      workspaceId,
+      userId: session.user.id,
+      action: 'BULK_MOVED_STAGE',
+      details: `${userObj?.name || 'A user'} moved ${validIds.length} candidates to the ${newStage} stage.`,
+    },
+  });
+
+  revalidatePath('/dashboard/candidates');
+}
+
 const candidateSchema = z.object({
   jobId: z.string().min(1, 'Job is required'),
   name: z.string().min(2, 'Name is required'),

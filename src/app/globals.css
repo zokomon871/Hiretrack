@@ -122,9 +122,42 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
   }
   html {
-    @apply font-sans;
+    @apply font-sans scroll-smooth;
+  }
+
+  /* Hide scrollbars globally for a sleek, zero-scroll app aesthetic */
+  * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  *::-webkit-scrollbar {
+    display: none !important;
+    width: 0px !important;
+    height: 0px !important;
   }
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+
+.glass-card {
+  background: color-mix(in srgb, var(--card) 75%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+}
+
+.gradient-mesh {
+  background-image: radial-gradient(at 0% 0%, oklch(0.6 0.18 260 / 12%) 0px, transparent 50%),
+                    radial-gradient(at 100% 100%, oklch(0.65 0.2 160 / 10%) 0px, transparent 50%),
+                    radial-gradient(at 50% 50%, oklch(0.7 0.18 320 / 8%) 0px, transparent 50%);
+}

@@ -1,72 +1,49 @@
 import { ReactNode } from 'react';
-import Link from 'next/link';
-import { auth, signOut } from '@/auth';
-import { Button } from '@/components/ui/button';
+import { auth } from '@/auth';
+import { prisma } from '@/lib/prisma';
+import { redirect } from 'next/navigation';
+import { DashboardSidebar } from '@/components/dashboard-sidebar';
 import { CommandPalette } from '@/components/command-palette';
-import { ThemeToggle } from '@/components/theme-toggle';
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const session = await auth();
 
+  if (!session?.user?.id) {
+    redirect('/login');
+  }
+
+  const userWithWorkspace = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    include: {
+      workspaceMembers: {
+        include: {
+          workspace: true,
+        },
+      },
+    },
+  });
+
+  const member = userWithWorkspace?.workspaceMembers[0];
+  const workspaceName = member?.workspace?.name || 'My Workspace';
+  const role = member?.role || 'MEMBER';
+
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <header className="sticky top-0 z-40 border-b bg-background">
-        <div className="container flex h-16 items-center justify-between py-4 px-8">
-          <div className="flex gap-6 md:gap-10">
-            <Link href="/dashboard" className="flex items-center space-x-2">
-              <span className="inline-block font-bold">HireTrack</span>
-            </Link>
-            <nav className="flex gap-6">
-              <Link
-                href="/dashboard"
-                className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
-              >
-                Overview
-              </Link>
-              <Link
-                href="/dashboard/jobs"
-                className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
-              >
-                Jobs
-              </Link>
-              <Link
-                href="/dashboard/candidates"
-                className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
-              >
-                Candidates
-              </Link>
-              <Link
-                href="/dashboard/team"
-                className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
-              >
-                Team Settings
-              </Link>
-            </nav>
-          </div>
-          <div className="flex flex-1 items-center justify-end space-x-4">
-            <nav className="flex items-center space-x-4">
-              <span className="text-sm font-medium text-muted-foreground">
-                {session?.user?.name || session?.user?.email}
-              </span>
-              <form
-                action={async () => {
-                  'use server';
-                  await signOut();
-                }}
-              >
-                <Button variant="outline" size="sm" type="submit">
-                  Sign out
-                </Button>
-              </form>
-              <ThemeToggle />
-            </nav>
-          </div>
-        </div>
-      </header>
-      <CommandPalette />
-      <main className="flex-1 space-y-4 p-8 pt-6">
-        {children}
-      </main>
+    <div className="min-h-screen flex flex-col lg:flex-row bg-background">
+      <DashboardSidebar
+        user={{
+          name: session.user.name,
+          email: session.user.email,
+          image: session.user.image,
+        }}
+        workspaceName={workspaceName}
+        role={role}
+      />
+      <div className="flex-1 flex flex-col min-w-0">
+        <CommandPalette />
+        <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-hidden flex flex-col min-h-0 no-scrollbar">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
