@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="hiretrackGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b4c6ff" />
+      <stop offset="50%" stop-color="#9eb7ff" />
+      <stop offset="100%" stop-color="#84a4ff" />
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="9" fill="url(#hiretrackGrad)" />
+  <path d="M 9.5 8.5 H 12.8 V 14.3 H 19.2 V 8.5 H 22.5 V 23.5 H 19.2 V 17.7 H 12.8 V 23.5 H 9.5 Z" fill="#09090b" />
+</svg>

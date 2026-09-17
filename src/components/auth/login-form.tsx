@@ -15,7 +15,7 @@ function SubmitButton() {
 
   return (
     <Button 
-      className="w-full h-11 text-sm font-semibold transition-all shadow-sm hover:shadow-md" 
+      className="w-full h-10 text-sm font-semibold transition-all shadow-md shadow-primary/20 bg-primary text-primary-foreground hover:brightness-110" 
       type="submit" 
       disabled={pending}
     >
@@ -36,30 +36,30 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="w-full space-y-6">
-      <div className="space-y-1.5 text-left">
-        <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
-        <p className="text-sm text-muted-foreground">
+    <div className="w-full space-y-4">
+      <div className="space-y-1 text-left">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Welcome back</h1>
+        <p className="text-xs sm:text-sm text-muted-foreground">
           Enter your credentials to access your hiring workspace
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3.5">
         <OAuthButtons />
 
-        <div className="relative">
+        <div className="relative my-1">
           <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+            <span className="w-full border-t border-border/80" />
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-3 text-muted-foreground font-medium">
+          <div className="relative flex justify-center text-[11px] uppercase">
+            <span className="bg-card px-2.5 text-muted-foreground font-medium">
               Or with email
             </span>
           </div>
         </div>
 
-        <form action={formAction} className="space-y-4">
-          <div className="space-y-2">
+        <form action={formAction} className="space-y-3">
+          <div className="space-y-1.5">
             <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Work Email
             </Label>
@@ -68,24 +68,22 @@ export function LoginForm() {
               name="email"
               type="email"
               placeholder="alex@company.com"
-              className="h-11 px-3.5 bg-muted/20 focus-visible:ring-primary"
+              className="h-10 px-3 bg-muted/20 focus-visible:ring-primary text-sm"
               required
               autoComplete="email"
             />
           </div>
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Password
-              </Label>
-            </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Password
+            </Label>
             <div className="relative">
               <Input
                 id="password"
                 name="password"
                 type={showPassword ? 'text' : 'password'}
-                className="h-11 px-3.5 pr-10 bg-muted/20 focus-visible:ring-primary"
+                className="h-10 px-3 pr-10 bg-muted/20 focus-visible:ring-primary text-sm"
                 required
                 autoComplete="current-password"
               />
@@ -102,22 +100,22 @@ export function LoginForm() {
           </div>
 
           {errorMessage && (
-            <div className="flex items-center gap-2 p-3 text-xs text-destructive bg-destructive/10 border border-destructive/20 rounded-lg">
+            <div className="flex items-center gap-2 p-2.5 text-xs text-destructive bg-destructive/10 border border-destructive/20 rounded-lg">
               <AlertCircle className="h-4 w-4 shrink-0" />
               <span>{errorMessage}</span>
             </div>
           )}
 
           <SubmitButton />
+
+          <p className="text-center text-xs text-muted-foreground pt-1">
+            Don&apos;t have an account?{' '}
+            <Link href="/signup" className="font-semibold text-primary underline underline-offset-4 hover:opacity-80">
+              Sign up
+            </Link>
+          </p>
         </form>
       </div>
-
-      <p className="text-center text-xs text-muted-foreground">
-        Don&apos;t have an account?{' '}
-        <Link href="/signup" className="font-semibold text-primary underline underline-offset-4 hover:opacity-80">
-          Create workspace
-        </Link>
-      </p>
     </div>
   );
 }

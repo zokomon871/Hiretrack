@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 import { DashboardSidebar } from '@/components/dashboard-sidebar';
 import { CommandPalette } from '@/components/command-palette';
+import { isSuperAdmin } from '@/lib/superadmin';
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const session = await auth();
@@ -26,6 +27,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const member = userWithWorkspace?.workspaceMembers[0];
   const workspaceName = member?.workspace?.name || 'My Workspace';
   const role = member?.role || 'MEMBER';
+  const superAdmin = isSuperAdmin(session.user.email);
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-background">
@@ -37,6 +39,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         }}
         workspaceName={workspaceName}
         role={role}
+        isSuperAdmin={superAdmin}
       />
       <div className="flex-1 flex flex-col min-w-0">
         <CommandPalette />

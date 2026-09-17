@@ -23,8 +23,18 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "HireTrack | Modern Applicant Tracking System",
     description: "A fast, beautifully designed applicant tracking system for modern B2B teams.",
-  }
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon.png', type: 'image/png', sizes: '32x32' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
 };
+
 
 export default function RootLayout({
   children,
@@ -32,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body className={`${inter.className} antialiased bg-background text-foreground`}>
         <ThemeProvider
           attribute="class"

@@ -57,7 +57,7 @@ export default async function TeamPage() {
 
       <div>
         <h3 className="text-xl font-bold mb-4">Current Members</h3>
-        <div className="rounded-md border bg-card">
+        <div className="rounded-2xl glass-card border-border/80 overflow-hidden shadow-sm">
           <Table>
             <TableHeader>
               <TableRow>
@@ -71,7 +71,11 @@ export default async function TeamPage() {
                 <TableRow key={member.id}>
                   <TableCell className="font-medium">{member.user.name || 'N/A'}</TableCell>
                   <TableCell>{member.user.email}</TableCell>
-                  <TableCell>{member.role}</TableCell>
+                  <TableCell>
+                    <span className="px-2 py-0.5 rounded-full bg-primary/15 text-primary text-xs font-semibold border border-primary/20">
+                      {member.role}
+                    </span>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -82,7 +86,7 @@ export default async function TeamPage() {
       {pendingInvitations.length > 0 && (
         <div className="mt-8">
           <h3 className="text-xl font-bold mb-4">Pending Invitations</h3>
-          <div className="rounded-md border bg-card">
+          <div className="rounded-2xl glass-card border-border/80 overflow-hidden shadow-sm">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -95,7 +99,11 @@ export default async function TeamPage() {
                 {pendingInvitations.map((invitation) => (
                   <TableRow key={invitation.id}>
                     <TableCell>{invitation.email}</TableCell>
-                    <TableCell>{invitation.role}</TableCell>
+                    <TableCell>
+                      <span className="px-2 py-0.5 rounded-full bg-muted text-muted-foreground text-xs font-medium border border-border">
+                        {invitation.role}
+                      </span>
+                    </TableCell>
                     <TableCell>{new Date(invitation.expires).toLocaleDateString()}</TableCell>
                   </TableRow>
                 ))}

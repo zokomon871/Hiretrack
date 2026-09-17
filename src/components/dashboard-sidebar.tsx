@@ -15,11 +15,13 @@ import {
   X, 
   Sparkles,
   ChevronRight,
-  Plus
+  Plus,
+  ShieldCheck
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
-import { signOutAction } from '@/lib/actions/auth';
+import { signOut } from 'next-auth/react';
+import { BrandLogo } from '@/components/brand-logo';
 
 interface DashboardSidebarProps {
   user: {
@@ -29,9 +31,10 @@ interface DashboardSidebarProps {
   };
   workspaceName?: string;
   role?: string;
+  isSuperAdmin?: boolean;
 }
 
-export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'MEMBER' }: DashboardSidebarProps) {
+export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'MEMBER', isSuperAdmin = false }: DashboardSidebarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -58,20 +61,21 @@ export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'ME
     .toUpperCase();
 
   const sidebarContent = (
-    <div className="flex flex-col h-full bg-card border-r border-border select-none">
+    <div className="flex flex-col h-full bg-sidebar border-r border-sidebar-border select-none">
       {/* Workspace Header */}
-      <div className="p-4 border-b border-border/80 flex items-center justify-between">
-        <Link href="/dashboard" className="flex items-center gap-3 group">
-          <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-black shadow-md shadow-primary/20 group-hover:scale-105 transition-transform">
-            H
-          </div>
-          <div className="overflow-hidden text-left">
-            <div className="font-bold text-sm truncate tracking-tight text-foreground flex items-center gap-1.5">
+      <div className="p-4 border-b border-sidebar-border/80 flex items-center justify-between">
+        <Link href="/dashboard" className="flex items-center gap-3 group min-w-0">
+          <BrandLogo className="h-8 w-8 text-sm group-hover:scale-105 transition-transform shrink-0" />
+          <div className="flex flex-col justify-center min-w-0 text-left">
+            <div 
+              className="font-semibold text-sm truncate text-foreground leading-tight tracking-normal"
+              title={workspaceName}
+            >
               {workspaceName}
             </div>
-            <div className="text-[11px] text-muted-foreground flex items-center gap-1 font-medium">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              HireTrack v2.0
+            <div className="text-[11px] text-muted-foreground/80 flex items-center gap-1.5 font-medium leading-none mt-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse shadow-xs shadow-emerald-400/50 shrink-0" />
+              HireTrack
             </div>
           </div>
         </Link>
@@ -81,19 +85,19 @@ export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'ME
       <div className="p-3 space-y-2">
         <button
           onClick={handleOpenSearch}
-          className="w-full flex items-center justify-between px-3 py-2 text-xs font-medium text-muted-foreground bg-muted/40 hover:bg-muted rounded-lg border border-border/80 transition-all group"
+          className="w-full flex items-center justify-between px-3 py-2 text-xs font-medium text-muted-foreground bg-card/60 hover:bg-card/90 rounded-xl border border-sidebar-border transition-all group shadow-xs hover:border-primary/40"
         >
           <span className="flex items-center gap-2">
-            <Search className="h-3.5 w-3.5 group-hover:text-foreground transition-colors" />
+            <Search className="h-3.5 w-3.5 group-hover:text-primary transition-colors" />
             Quick search...
           </span>
-          <kbd className="px-1.5 py-0.5 text-[10px] bg-background border border-border rounded font-mono text-muted-foreground">
+          <kbd className="px-1.5 py-0.5 text-[10px] bg-background border border-border rounded font-mono text-muted-foreground shadow-2xs">
             ⌘K
           </kbd>
         </button>
 
         <Link href="/dashboard/candidates/new" className="block">
-          <Button size="sm" className="w-full h-8 text-xs font-semibold gap-1.5 shadow-sm justify-center">
+          <Button size="sm" className="w-full h-8 text-xs font-semibold gap-1.5 shadow-md shadow-primary/20 bg-primary text-primary-foreground hover:brightness-110 justify-center rounded-xl transition-all">
             <Plus className="h-3.5 w-3.5" />
             Add Candidate
           </Button>
@@ -102,7 +106,27 @@ export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'ME
 
       {/* Main Nav Links */}
       <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
-        <div className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/70 px-3 py-1.5">
+        {isSuperAdmin && (
+          <div className="mb-3 pb-2.5 border-b border-sidebar-border/80">
+            <div className="text-[10px] uppercase font-bold tracking-wider text-amber-400/90 px-3 py-1 flex items-center justify-between">
+              <span>App Owner</span>
+              <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">CRM</span>
+            </div>
+            <Link
+              href="/superadmin"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 transition-all shadow-xs group cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <ShieldCheck className="h-4 w-4 text-amber-400 group-hover:scale-110 transition-transform" />
+                <span>Super Admin CRM</span>
+              </div>
+              <ChevronRight className="h-3.5 w-3.5 text-amber-400/70" />
+            </Link>
+          </div>
+        )}
+
+        <div className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/60 px-3 py-1.5">
           Workstation
         </div>
         {navigation.map((item) => {
@@ -117,8 +141,8 @@ export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'ME
               onClick={() => setMobileOpen(false)}
               className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
                 isActive
-                  ? 'bg-primary text-primary-foreground shadow-sm font-semibold'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                  ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20 font-semibold'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/70'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -134,9 +158,9 @@ export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'ME
       </nav>
 
       {/* Quick Upgrade/Feature Note */}
-      <div className="p-3 mx-3 mb-2 rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 text-xs">
+      <div className="p-3 mx-3 mb-2 rounded-xl bg-gradient-to-br from-primary/15 via-primary/5 to-transparent border border-primary/25 text-xs shadow-xs">
         <div className="flex items-center gap-1.5 font-semibold text-foreground text-[11px] mb-1">
-          <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+          <Sparkles className="h-3.5 w-3.5 text-amber-400" />
           No Drag & Drop Lag
         </div>
         <p className="text-[11px] text-muted-foreground leading-relaxed">
@@ -145,10 +169,10 @@ export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'ME
       </div>
 
       {/* User Footer Profile */}
-      <div className="p-3 border-t border-border bg-card/50">
-        <div className="flex items-center justify-between gap-2 p-1.5 rounded-xl hover:bg-muted/40 transition-colors">
+      <div className="p-3 border-t border-sidebar-border bg-sidebar/50">
+        <div className="flex items-center justify-between gap-2 p-1.5 rounded-xl hover:bg-sidebar-accent/50 transition-colors">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="h-8 w-8 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-xs shrink-0 border border-primary/20">
+            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 text-primary flex items-center justify-center font-bold text-xs shrink-0 border border-primary/30 shadow-2xs">
               {initials}
             </div>
             <div className="overflow-hidden text-left">
@@ -162,11 +186,15 @@ export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'ME
           </div>
           <div className="flex items-center gap-1">
             <ThemeToggle />
-            <form action={signOutAction}>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10" title="Sign out">
-                <LogOut className="h-4 w-4" />
-              </Button>
-            </form>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => signOut({ callbackUrl: '/login' })}
+              className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 cursor-pointer"
+              title="Sign out"
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </div>
@@ -176,24 +204,23 @@ export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'ME
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between p-3.5 border-b border-border bg-background/80 backdrop-blur-md">
+      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between p-3.5 border-b border-border/80 bg-background/80 backdrop-blur-xl">
         <div className="flex items-center gap-2.5">
-          <div className="h-7 w-7 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-black text-xs">
-            H
-          </div>
+          <BrandLogo className="h-7 w-7 text-xs" />
           <span className="font-bold text-sm tracking-tight">{workspaceName}</span>
         </div>
+
         <div className="flex items-center gap-2">
           <button
             onClick={handleOpenSearch}
-            className="p-2 rounded-lg bg-muted text-muted-foreground"
+            className="p-2 rounded-lg bg-card border border-border/60 text-muted-foreground"
             title="Search"
           >
             <Search className="h-4 w-4" />
           </button>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2 rounded-lg bg-muted text-foreground"
+            className="p-2 rounded-lg bg-card border border-border/60 text-foreground"
             aria-label="Toggle navigation"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -208,7 +235,7 @@ export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'ME
           onClick={() => setMobileOpen(false)}
         >
           <div 
-            className="w-72 h-full bg-card shadow-2xl"
+            className="w-72 h-full bg-sidebar shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {sidebarContent}
@@ -217,7 +244,7 @@ export function DashboardSidebar({ user, workspaceName = 'Workspace', role = 'ME
       )}
 
       {/* Desktop Persistent Sidebar */}
-      <aside className="hidden lg:block w-64 h-screen sticky top-0 shrink-0 z-30">
+      <aside className="hidden lg:block w-[270px] h-screen sticky top-0 shrink-0 z-30">
         {sidebarContent}
       </aside>
     </>

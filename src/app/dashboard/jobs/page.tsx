@@ -44,7 +44,7 @@ export default async function JobsPage() {
         </Link>
       </div>
 
-      <div className="rounded-md border bg-card">
+      <div className="rounded-2xl glass-card border-border/80 overflow-hidden shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>

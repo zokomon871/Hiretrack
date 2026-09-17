@@ -151,10 +151,10 @@ export default async function DashboardPage() {
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {/* Active Jobs */}
         <Link href="/dashboard/jobs" className="group">
-          <div className="p-5 rounded-2xl bg-card border border-border shadow-xs hover:border-primary/50 transition-all space-y-3">
+          <div className="p-5 rounded-2xl glass-card border-border/80 shadow-sm hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-muted-foreground">Active Jobs</span>
-              <div className="h-8 w-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center">
+              <div className="h-8 w-8 rounded-lg bg-primary/15 text-primary flex items-center justify-center border border-primary/20 group-hover:scale-105 transition-transform">
                 <Briefcase className="h-4 w-4" />
               </div>
             </div>
@@ -169,16 +169,16 @@ export default async function DashboardPage() {
 
         {/* Total Candidates */}
         <Link href="/dashboard/candidates" className="group">
-          <div className="p-5 rounded-2xl bg-card border border-border shadow-xs hover:border-primary/50 transition-all space-y-3">
+          <div className="p-5 rounded-2xl glass-card border-border/80 shadow-sm hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-muted-foreground">Candidates in Pipeline</span>
-              <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+              <div className="h-8 w-8 rounded-lg bg-indigo-500/15 text-indigo-400 flex items-center justify-center border border-indigo-500/20 group-hover:scale-105 transition-transform">
                 <Users className="h-4 w-4" />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
               <div className="text-3xl font-extrabold tracking-tight">{candidatesCount}</div>
-              <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <span className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1">
                 <TrendingUp className="h-3 w-3" /> Active funnel
               </span>
             </div>
@@ -187,10 +187,10 @@ export default async function DashboardPage() {
 
         {/* Upcoming Interviews */}
         <Link href="/dashboard/candidates" className="group">
-          <div className="p-5 rounded-2xl bg-card border border-border shadow-xs hover:border-primary/50 transition-all space-y-3">
+          <div className="p-5 rounded-2xl glass-card border-border/80 shadow-sm hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-muted-foreground">Upcoming Interviews</span>
-              <div className="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+              <div className="h-8 w-8 rounded-lg bg-amber-500/15 text-amber-400 flex items-center justify-center border border-amber-500/20 group-hover:scale-105 transition-transform">
                 <Calendar className="h-4 w-4" />
               </div>
             </div>
@@ -205,16 +205,16 @@ export default async function DashboardPage() {
 
         {/* Hired Candidates */}
         <Link href="/dashboard/candidates" className="group">
-          <div className="p-5 rounded-2xl bg-card border border-border shadow-xs hover:border-primary/50 transition-all space-y-3">
+          <div className="p-5 rounded-2xl glass-card border-border/80 shadow-sm hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-muted-foreground">Hired Candidates</span>
-              <div className="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+              <div className="h-8 w-8 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center border border-emerald-500/20 group-hover:scale-105 transition-transform">
                 <UserCheck className="h-4 w-4" />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
               <div className="text-3xl font-extrabold tracking-tight">{stageStats.HIRED || 0}</div>
-              <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <span className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1">
                 <CheckCircle2 className="h-3 w-3" /> Accepted offers
               </span>
             </div>
@@ -223,7 +223,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Visual Pipeline Conversion Funnel */}
-      <div className="p-6 rounded-2xl bg-card border border-border space-y-4">
+      <div className="p-6 rounded-2xl glass-card border-border/80 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-base font-bold text-foreground flex items-center gap-2">
@@ -235,7 +235,7 @@ export default async function DashboardPage() {
             </p>
           </div>
           <Link href="/dashboard/candidates">
-            <Button variant="ghost" size="sm" className="h-8 text-xs font-semibold text-primary gap-1">
+            <Button variant="ghost" size="sm" className="h-8 text-xs font-semibold text-primary gap-1 hover:bg-primary/10">
               Open Workstation <ChevronRight className="h-3.5 w-3.5" />
             </Button>
           </Link>
@@ -249,7 +249,7 @@ export default async function DashboardPage() {
             return (
               <div
                 key={stage}
-                className="p-4 rounded-xl bg-muted/30 border border-border/80 space-y-2 hover:bg-muted/50 transition-colors"
+                className="p-4 rounded-xl bg-card/60 border border-border/70 space-y-2 hover:bg-card/90 transition-colors"
               >
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-semibold text-muted-foreground capitalize">
@@ -257,9 +257,9 @@ export default async function DashboardPage() {
                   </span>
                   <span className="text-[11px] font-bold text-foreground">{count}</span>
                 </div>
-                <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                <div className="h-2 w-full bg-muted/70 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-primary rounded-full transition-all duration-500"
+                    className="h-full bg-primary rounded-full transition-all duration-500 shadow-xs shadow-primary/50"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
@@ -275,7 +275,7 @@ export default async function DashboardPage() {
       {/* Bottom Row: Upcoming Interviews & Recent Activity Stream */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Upcoming Interviews Schedule */}
-        <div className="p-6 rounded-2xl bg-card border border-border space-y-4 flex flex-col">
+        <div className="p-6 rounded-2xl glass-card border-border/80 shadow-sm space-y-4 flex flex-col">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Calendar className="h-4 w-4 text-amber-500" />
@@ -332,7 +332,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Live Activity Stream */}
-        <div className="p-6 rounded-2xl bg-card border border-border space-y-4 flex flex-col">
+        <div className="p-6 rounded-2xl glass-card border-border/80 shadow-sm space-y-4 flex flex-col">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Clock className="h-4 w-4 text-primary" />

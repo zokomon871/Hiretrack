@@ -1,108 +1,100 @@
 import { SignupForm } from '@/components/auth/signup-form';
 import Link from 'next/link';
 import { ShieldCheck, Zap, Sparkles, Building2 } from 'lucide-react';
+import { BrandLogo } from '@/components/brand-logo';
 
 export default function SignupPage() {
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 bg-background">
+    <div className="h-screen max-h-screen overflow-hidden grid lg:grid-cols-2 bg-background text-foreground relative">
       {/* Left side: Premium Branding & Workspace Onboarding Info */}
-      <div className="hidden lg:flex flex-col justify-between p-12 bg-zinc-950 text-white relative overflow-hidden">
+      <div className="hidden lg:flex flex-col justify-between p-8 lg:p-10 h-full bg-card/60 border-r border-border/80 text-foreground relative overflow-hidden backdrop-blur-2xl">
         {/* Glow backdrop effects */}
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" />
 
         {/* Brand Header */}
         <div className="relative z-10">
-          <Link href="/" className="inline-flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-primary to-indigo-400 flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/25 font-black text-lg">
-              H
-            </div>
-            <span className="font-bold text-xl tracking-tight text-white">HireTrack</span>
-            <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">
-              v2.0
-            </span>
+          <Link href="/" className="inline-flex items-center gap-2.5 group">
+            <BrandLogo className="h-8 w-8 text-xs group-hover:scale-105 transition-transform" />
+            <span className="font-bold text-lg tracking-tight text-foreground">HireTrack</span>
           </Link>
         </div>
 
         {/* Center Content */}
-        <div className="relative z-10 max-w-lg space-y-8 my-auto">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-medium text-zinc-300 border border-white/10">
-              <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+        <div className="relative z-10 max-w-md space-y-5 my-auto">
+          <div className="space-y-2.5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 backdrop-blur-md text-xs font-medium text-primary border border-primary/20 shadow-xs">
+              <Sparkles className="h-3.5 w-3.5 text-primary animate-pulse" />
               <span>Setup in under 60 seconds</span>
             </div>
-            <h2 className="text-4xl font-extrabold tracking-tight leading-tight text-white">
-              Build your modern hiring engine today.
+            <h2 className="text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-foreground">
+              Build your modern <span className="text-gradient">hiring engine.</span>
             </h2>
-            <p className="text-zinc-400 text-base leading-relaxed">
+            <p className="text-muted-foreground text-sm leading-relaxed">
               Equip your interviewers and hiring managers with a unified hiring workstation, real-time stage transitions, and bias-free scorecards.
             </p>
           </div>
 
           {/* Benefit Cards */}
-          <div className="grid gap-3">
-            <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <div className="h-8 w-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center shrink-0 mt-0.5">
+          <div className="grid gap-2.5">
+            <div className="flex items-start gap-3 p-3 rounded-xl glass-card border-border/80 shadow-sm">
+              <div className="h-8 w-8 rounded-lg bg-primary/15 text-primary flex items-center justify-center shrink-0 mt-0.5 border border-primary/20">
                 <Zap className="h-4 w-4" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-zinc-200">Candidate Review Workstation</h4>
-                <p className="text-xs text-zinc-400 mt-0.5">Triage hundreds of applicants with split-screen review and instant keyboard hotkeys.</p>
+                <h4 className="text-xs font-semibold text-foreground">Candidate Review Workstation</h4>
+                <p className="text-[11px] text-muted-foreground mt-0.5">Triage applicants with split-screen review and instant keyboard hotkeys.</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <div className="h-8 w-8 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center shrink-0 mt-0.5">
+            <div className="flex items-start gap-3 p-3 rounded-xl glass-card border-border/80 shadow-sm">
+              <div className="h-8 w-8 rounded-lg bg-indigo-500/15 text-indigo-400 flex items-center justify-center shrink-0 mt-0.5 border border-indigo-500/20">
                 <ShieldCheck className="h-4 w-4" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-zinc-200">Structured Scorecards & Roles</h4>
-                <p className="text-xs text-zinc-400 mt-0.5">Granular Admin, Member, and Viewer permissions with standardized rating rubrics.</p>
+                <h4 className="text-xs font-semibold text-foreground">Structured Scorecards & Roles</h4>
+                <p className="text-[11px] text-muted-foreground mt-0.5">Granular Admin, Member, and Viewer permissions with standardized rubrics.</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <div className="h-8 w-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center shrink-0 mt-0.5">
+            <div className="flex items-start gap-3 p-3 rounded-xl glass-card border-border/80 shadow-sm">
+              <div className="h-8 w-8 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-500/20">
                 <Building2 className="h-4 w-4" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-zinc-200">Multi-Job Pipeline Control</h4>
-                <p className="text-xs text-zinc-400 mt-0.5">Manage engineering, design, and sales roles with dedicated stage funnels.</p>
+                <h4 className="text-xs font-semibold text-foreground">Collaborative Workspaces</h4>
+                <p className="text-[11px] text-muted-foreground mt-0.5">Seamless team invites, shared pipelines, and unified activity tracking.</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Footer info */}
-        <div className="relative z-10 text-xs text-zinc-500 flex justify-between">
-          <span>No credit card required • Free workspace trial</span>
-          <span>HireTrack 2026</span>
+        <div className="relative z-10 text-[11px] text-muted-foreground/70 flex justify-between">
+          <span>&copy; {new Date().getFullYear()} HireTrack Systems Inc.</span>
+          <span>Security & Compliance Guaranteed</span>
         </div>
       </div>
 
       {/* Right side: Form Card */}
-      <div className="flex flex-col justify-between p-6 sm:p-12 md:p-16 lg:p-20 overflow-y-auto">
-        <div className="flex justify-between items-center lg:justify-end">
-          <Link href="/" className="lg:hidden flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">
-              H
-            </div>
-            <span className="font-bold text-lg">HireTrack</span>
-          </Link>
-          <Link
-            href="/login"
-            className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Already have an account? <span className="text-primary underline">Sign in</span>
+      <div className="flex flex-col justify-between p-4 sm:p-6 lg:p-8 h-full overflow-y-auto no-scrollbar relative">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none -z-10" />
+
+        <div className="flex items-center justify-between lg:justify-end">
+          <Link href="/" className="lg:hidden flex items-center gap-2 group">
+            <BrandLogo className="h-7 w-7 text-xs group-hover:scale-105 transition-transform" />
+            <span className="font-bold text-base">HireTrack</span>
           </Link>
         </div>
 
-        <div className="w-full max-w-md mx-auto my-auto py-8">
-          <SignupForm />
+        <div className="w-full max-w-md mx-auto my-auto py-1">
+          <div className="p-6 sm:p-7 rounded-2xl glass-card border border-border/80 shadow-xl">
+            <SignupForm />
+          </div>
         </div>
 
-        <div className="text-center text-xs text-muted-foreground">
-          By creating an account, you agree to HireTrack&apos;s Terms of Service and Privacy Policy.
+        <div className="text-center text-[11px] text-muted-foreground pb-2">
+          By signing up, you agree to HireTrack&apos;s Terms of Service and Privacy Policy.
         </div>
       </div>
     </div>
